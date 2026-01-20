@@ -60,6 +60,12 @@ https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/pytorc
 https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/chinese-wav2vec2-base-fairseq-ckpt.pt
   dir=models/wav2vec2
   out=chinese-wav2vec2-base-fairseq-ckpt.pt
+https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/preprocessor_config.json
+  dir=models/transformers/TencentGameMate/chinese-wav2vec2-base
+  out=preprocessor_config.json
+https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/vocab.json
+  dir=models/transformers/TencentGameMate/chinese-wav2vec2-base
+  out=vocab.json
 https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/InfiniteTalk/Wan2_1-InfiniteTalk-Single_fp8_e4m3fn_scaled_KJ.safetensors
   dir=models/diffusion_models/infinite_talk
   out=Wan2_1-InfiniteTalk-Single_fp8_e4m3fn_scaled_KJ.safetensors
