@@ -29,17 +29,6 @@ fi
 echo "Cloning Nodes..."
 NODES=(
     "https://github.com/ltdrdata/ComfyUI-Manager"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
-    "https://github.com/Lightricks/ComfyUI-LTXVideo"
-    "https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
-    "https://github.com/rgthree/rgthree-comfy"
-    "https://github.com/kijai/ComfyUI-KJNodes"
-    "https://github.com/crystian/ComfyUI-Crystools"
-    "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
-    "https://github.com/kijai/ComfyUI-MelBandRoFormer"
-    "https://github.com/theUpsider/ComfyUI-Logic"
-    "https://github.com/kijai/ComfyUI-WanVideoWrapper"
-    "https://github.com/christian-byrne/audio-separation-nodes-comfyui"
 )
 
 for repo in "${NODES[@]}"; do
