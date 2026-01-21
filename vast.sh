@@ -15,8 +15,27 @@ PIP_PACKAGES=(
 )
 
 NODES=(
-    "https://github.com/Comfy-Org/ComfyUI-Manager"
-    #"https://github.com/cubiq/ComfyUI_essentials"
+    "https://github.com/ltdrdata/ComfyUI-Manager"
+    "https://github.com/city96/ComfyUI-GGUF"
+    "https://github.com/rgthree/rgthree-comfy"
+    "https://github.com/yolain/ComfyUI-Easy-Use"
+    "https://github.com/kijai/ComfyUI-KJNodes"
+    "https://github.com/ssitu/ComfyUI_UltimateSDUpscale"
+    "https://github.com/cubiq/ComfyUI_essentials"
+    "https://github.com/wallish77/wlsh_nodes"
+    "https://github.com/vrgamegirl19/comfyui-vrgamedevgirl"
+    "https://github.com/ClownsharkBatwing/RES4LYF"
+    "https://github.com/theUpsider/ComfyUI-Logic"
+    "https://github.com/Fannovel16/comfyui_controlnet_aux"
+    "https://github.com/Lightricks/ComfyUI-LTXVideo"
+    "https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
+    "https://github.com/crystian/ComfyUI-Crystools"
+    "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
+    "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes"
+    "https://github.com/kijai/ComfyUI-MelBandRoFormer"
+    "https://github.com/M1kep/ComfyLiterals"
+    "https://github.com/YaserJaradeh/comfyui-yaser-nodes"
+    "https://github.com/olduvai-jp/ComfyUI-S3-IO"
 )
 
 LORA_MODELS=(
@@ -47,6 +66,10 @@ LTX_TEXT_ENCODERS=(
 
 LTX_DIFFUSION=(
     "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/diffusion_models/ltx-2-19b-dev_fp4_transformer_only.safetensors"
+)
+
+LTX_DIFFUSION_GGUF=(
+    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/diffusion_models/ltx-2-19b-dev_Q8_0.gguf"
 )
 
 LTX_UPSCALER=(
@@ -112,6 +135,9 @@ function provisioning_get_all_files() {
         "${COMFYUI_DIR}/models/transformers/TencentGameMate/chinese-wav2vec2-base" \
         "${TRANSFORMERS_CHINESE_WAV2VEC2[@]}" &
     provisioning_get_files \
+        "${COMFYUI_DIR}/models/unet" \
+        "${LTX_DIFFUSION_GGUF[@]}" &
+    provisioning_get_files \
         "${COMFYUI_DIR}/models/diffusion_models" \
         "${LTX_DIFFUSION[@]}" &
     provisioning_get_files \
@@ -142,7 +168,7 @@ function provisioning_get_pip_packages() {
 
 function provisioning_get_nodes() {
     for repo in "${NODES[@]}"; do
-        dir="${repo##*/}"
+        dir=$(basename "${repo}" .git)
         path="${COMFYUI_DIR}/custom_nodes/${dir}"
         requirements="${path}/requirements.txt"
         if [[ -d $path ]]; then
