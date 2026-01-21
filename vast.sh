@@ -85,11 +85,13 @@ MISC_DIFFUSION=(
 function provisioning_start() {
     provisioning_print_header
     
-    # Run setup tasks (Apt, Nodes, Pip) in background
-    provisioning_get_requirements &
+    # 1. Install APT packages first (synchronously) because model downloads depend on aria2c
+    provisioning_get_apt_packages
+    
+    # 2. Run remaining setup (Nodes, Pip) and Downloads in parallel
+    provisioning_get_remaining_requirements &
     SETUP_PID=$!
     
-    # Run download tasks in background
     provisioning_get_all_files &
     DOWNLOAD_PID=$!
     
@@ -100,9 +102,8 @@ function provisioning_start() {
     provisioning_print_end
 }
 
-function provisioning_get_requirements() {
-    printf "--- 🛠️ STARTING SETUP (APT, NODES, PIP) ---\n"
-    provisioning_get_apt_packages
+function provisioning_get_remaining_requirements() {
+    printf "--- 🛠️ STARTING REMAINING SETUP (NODES, PIP) ---\n"
     provisioning_get_nodes
     provisioning_get_pip_packages
     printf "--- ✅ SETUP COMPLETE ---\n"
