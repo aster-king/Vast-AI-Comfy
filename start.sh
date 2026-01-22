@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+cd ComfyUI
+source /venv/main/bin/activate
+python main.py --port 8188 --listen
