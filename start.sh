@@ -3,4 +3,4 @@ set -e
 
 cd ComfyUI
 source /venv/main/bin/activate
-python main.py --port 8188 --listen
+python main.py --port 8188 --listen --fast fp16_accumulation
