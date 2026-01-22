@@ -73,6 +73,7 @@ TRANSFORMERS_CHINESE_WAV2VEC2=(
 LTX_TEXT_ENCODERS=(
     "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors"
     "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/text_encoders/ltx-2-19b-embeddings_connector_dev_bf16.safetensors"
+    "https://huggingface.co/unsloth/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-IQ4_XS.gguf"
 )
 
 LTX_DIFFUSION=(
