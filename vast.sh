@@ -109,7 +109,7 @@ function provisioning_start() {
     # STEP 1: Install download tools (aria2 + hf_transfer)
     printf "--- 📦 STEP 1: INSTALLING DOWNLOAD TOOLS ---\n"
     provisioning_install_download_tools
-    touch "${WORKSPACE}/.step1_download_tools_installed"
+    touch "${WORKSPACE}/step1_download_tools_installed"
     printf "--- ✅ STEP 1 COMPLETE ---\n"
     
     # STEP 2: Download start.sh & vast.sh (files serve as their own markers)
@@ -120,7 +120,7 @@ function provisioning_start() {
     # STEP 3: Clone/Update custom nodes
     printf "--- 🔧 STEP 3: CLONING/UPDATING CUSTOM NODES ---\n"
     provisioning_clone_nodes
-    touch "${WORKSPACE}/.step3_repo_downloaded"
+    touch "${WORKSPACE}/step3_repo_downloaded"
     printf "--- ✅ STEP 3 COMPLETE ---\n"
     
     # STEP 4: Run model downloads + pip installs in parallel
@@ -129,12 +129,12 @@ function provisioning_start() {
     # 4A: Pip installs (background, then launch ComfyUI when done)
     (
         provisioning_install_node_requirements
-        touch "${WORKSPACE}/.step4a1_requirements_installed"
+        touch "${WORKSPACE}/step4a1_requirements_installed"
         printf "--- ✅ STEP 4A1 COMPLETE (Requirements installed) ---\n"
         
         # STEP 4A2: Launch ComfyUI as soon as pip is done (don't wait for downloads)
         printf "--- 🚀 STEP 4A2: LAUNCHING COMFYUI ---\n"
-        touch "${WORKSPACE}/.step4a2_comfyui_launching"
+        touch "${WORKSPACE}/step4a2_comfyui_launching"
         bash "${WORKSPACE}/start.sh"
     ) &
     PIP_AND_LAUNCH_PID=$!
@@ -145,7 +145,7 @@ function provisioning_start() {
     
     # Wait for downloads to complete (pip/launch runs independently)
     wait $DOWNLOAD_PID
-    touch "${WORKSPACE}/.step4b_models_downloaded"
+    touch "${WORKSPACE}/step4b_models_downloaded"
     printf "--- ✅ STEP 4B COMPLETE (Models downloaded) ---\n"
     
     # Wait for pip install and ComfyUI launch (this will hang because server runs)
@@ -317,7 +317,12 @@ function provisioning_download() {
         printf "🚀 Trying hf_transfer for: %s (repo: %s)\n" "$filename" "$repo_id"
         
         # Try hf_transfer first, fallback to aria2c if it fails
-        if huggingface-cli download "$repo_id" "$file_path" --local-dir "$dir" --local-dir-use-symlinks False 2>/dev/null; then
+        # Download to temp location then move to avoid nested folders from file_path
+        if huggingface-cli download "$repo_id" "$file_path" --local-dir "${dir}/.hf_temp" --local-dir-use-symlinks False 2>/dev/null; then
+            # Move the file from the nested structure to the target directory
+            find "${dir}/.hf_temp" -type f -name "$filename" -exec mv {} "${dir}/" \;
+            # Clean up temp directory
+            rm -rf "${dir}/.hf_temp"
             printf "✅ Downloaded via hf_transfer: %s\n" "$filename"
         else
             printf "⚠️  hf_transfer failed, falling back to aria2c...\n"
