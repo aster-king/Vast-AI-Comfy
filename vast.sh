@@ -150,7 +150,7 @@ function provisioning_start() {
     
     # Wait for pip install and ComfyUI launch (this will hang because server runs)
     wait $PIP_AND_LAUNCH_PID
-    
+}
 
 
 
