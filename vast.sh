@@ -3,9 +3,16 @@
 source /venv/main/bin/activate
 COMFYUI_DIR=${WORKSPACE}/ComfyUI
 
-# Hugging Face Token for authenticated downloads
-export HF_TOKEN="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"
+# Hugging Face Token for authenticated downloads (read from environment)
+# Set HF_TOKEN in your Vast.ai template or on-start script
+export HF_TOKEN="${HF_TOKEN:-}"
 export HF_HUB_ENABLE_HF_TRANSFER=1
+
+# Warn if HF_TOKEN is not set
+if [[ -z "$HF_TOKEN" ]]; then
+    printf "⚠️  WARNING: HF_TOKEN is not set. Some downloads may fail.\n"
+    printf "   Set it in your Vast.ai template or run: export HF_TOKEN='your_token_here'\n"
+fi
 
 # Packages are installed after nodes so we can fix them...
 
@@ -144,15 +151,14 @@ function provisioning_start() {
     # Wait for pip install and ComfyUI launch (this will hang because server runs)
     wait $PIP_AND_LAUNCH_PID
     
-    provisioning_print_end
-}
+
 
 
 # STEP 1: Install aria2 and hf_transfer
 function provisioning_install_download_tools() {
     printf "Installing aria2...\n"
     if [[ -n $APT_PACKAGES ]]; then
-        sudo $APT_INSTALL ${APT_PACKAGES[@]}
+        sudo apt-get install -y ${APT_PACKAGES[@]}
     fi
     
     printf "Installing huggingface_hub with hf_transfer...\n"
@@ -192,7 +198,7 @@ function provisioning_clone_nodes() {
     done
 }
 
-# STEP 4B: Install requirements for all nodes
+# STEP 4A1: Install requirements for all nodes
 function provisioning_install_node_requirements() {
     printf "--- 📥 INSTALLING NODE REQUIREMENTS & PIP PACKAGES ---\n"
     
@@ -209,7 +215,7 @@ function provisioning_install_node_requirements() {
     printf "--- ✅ PIP INSTALLATIONS COMPLETE ---\n"
 }
 
-# STEP 4A: Download all model files
+# STEP 4B: Download all model files
 function provisioning_get_all_files() {
     printf "--- 🚀 STARTING MODEL DOWNLOADS ---\n"
     provisioning_get_files \
@@ -284,9 +290,7 @@ function provisioning_print_header() {
     printf "\n##############################################\n#                                            #\n#          Provisioning container            #\n#                                            #\n#         This will take some time           #\n#                                            #\n# Your container will be ready on completion #\n#                                            #\n##############################################\n\n"
 }
 
-function provisioning_print_end() {
-    printf "\nProvisioning complete:  Application will start now\n\n"
-}
+
 
 # Smart download function with fallback
 # Priority: hf_transfer (for HF URLs) → aria2c (fallback or for non-HF URLs)
