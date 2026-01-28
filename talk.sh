@@ -27,74 +27,63 @@ PIP_PACKAGES=(
 
 NODES=(
     "https://github.com/Comfy-Org/ComfyUI-Manager"
-    "https://github.com/city96/ComfyUI-GGUF"
-    "https://github.com/rgthree/rgthree-comfy"
-    "https://github.com/yolain/ComfyUI-Easy-Use"
+    "https://github.com/kijai/ComfyUI-WanVideoWrapper"
+    "https://github.com/christian-byrne/audio-separation-nodes-comfyui"
     "https://github.com/kijai/ComfyUI-KJNodes"
-    "https://github.com/ssitu/ComfyUI_UltimateSDUpscale"
-    "https://github.com/cubiq/ComfyUI_essentials"
-    "https://github.com/wallish77/wlsh_nodes"
-    "https://github.com/vrgamegirl19/comfyui-vrgamedevgirl"
-    "https://github.com/ClownsharkBatwing/RES4LYF"
-    "https://github.com/theUpsider/ComfyUI-Logic"
-    "https://github.com/Fannovel16/comfyui_controlnet_aux"
-    "https://github.com/Lightricks/ComfyUI-LTXVideo"
-    "https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
-    "https://github.com/crystian/ComfyUI-Crystools"
     "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
-    "https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes"
-    "https://github.com/kijai/ComfyUI-MelBandRoFormer"
-    "https://github.com/M1kep/ComfyLiterals"
-    "https://github.com/YaserJaradeh/comfyui-yaser-nodes"
-    "https://github.com/olduvai-jp/ComfyUI-S3-IO"
 )
 
-LORA_MODELS=(
-    "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-19b-distilled-lora-384.safetensors"
-    "https://huggingface.co/Lightricks/LTX-2-19b-IC-LoRA-Detailer/resolve/main/ltx-2-19b-ic-lora-detailer.safetensors"
-)
+########################################
+# InfiniteTalk Model URLs
+########################################
 
-VAE_MODELS=(
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_video_vae_bf16.safetensors"
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/VAE/LTX2_audio_vae_bf16.safetensors"
+# Chinese wav2vec2 (shared)
+TRANSFORMERS_CHINESE_WAV2VEC2=(
+    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/config.json"
+    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/preprocessor_config.json"
+    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/pytorch_model.bin"
+    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/README.md"
 )
 
 WAV2VEC2_MODELS=(
     "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/chinese-wav2vec2-base-fairseq-ckpt.pt"
 )
 
-TRANSFORMERS_CHINESE_WAV2VEC2=(
-    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/config.json"
-    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/pytorch_model.bin"
-    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/preprocessor_config.json"
-    "https://huggingface.co/TencentGameMate/chinese-wav2vec2-base/resolve/main/vocab.json"
+# InfiniteTalk diffusion models
+DIFFUSION_MODELS=(
+    "https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/InfiniteTalk/Wan2_1-InfiniteTalk-Single_fp8_e4m3fn_scaled_KJ.safetensors"
+    "https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/I2V/Wan2_1-I2V-14B-480p_fp8_e4m3fn_scaled_KJ.safetensors"
 )
 
-LTX_TEXT_ENCODERS=(
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/text_encoders/ltx-2-19b-embeddings_connector_dev_bf16.safetensors"
-    "https://huggingface.co/unsloth/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-IQ4_XS.gguf"
+# Text encoder
+TEXT_ENCODERS=(
+    "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/umt5-xxl-enc-fp8_e4m3fn.safetensors"
 )
 
-LTX_DIFFUSION_GGUF=(
-    "https://huggingface.co/Kijai/LTXV2_comfy/resolve/main/diffusion_models/ltx-2-19b-dev_Q8_0.gguf"
+# InfiniteTalk LoRA
+LORA_MODELS=(
+    "https://huggingface.co/lightx2v/Wan2.1-I2V-14B-480P-StepDistill-CfgDistill-Lightx2v/resolve/main/loras/Wan21_I2V_14B_lightx2v_cfg_step_distill_lora_rank64.safetensors"
 )
 
-LTX_UPSCALER=(
-    "https://huggingface.co/Lightricks/LTX-2/resolve/main/ltx-2-spatial-upscaler-x2-1.0.safetensors"
+# Clip Vision
+CLIP_VISION_MODELS=(
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
 )
 
-MISC_DIFFUSION=(
-    "https://huggingface.co/Kijai/MelBandRoFormer_comfy/resolve/main/MelBandRoformer_fp16.safetensors"
+# VAE
+VAE_MODELS=(
+    "https://huggingface.co/Kijai/WanVideo_comfy/resolve/main/Wan2_1_VAE_bf16.safetensors"
 )
 
+# Workflow files
 WORKFLOW_FILES=(
-    "https://raw.githubusercontent.com/aster-king/Vast-AI-Comfy/main/ltx2.json"
+    "https://raw.githubusercontent.com/aster-king/Vast-AI-Comfy/main/talk.json"
 )
 
 # Scripts to download to WORKSPACE directory
 WORKSPACE_SCRIPTS=(
     "https://raw.githubusercontent.com/aster-king/Vast-AI-Comfy/refs/heads/main/start.sh"
-    "https://raw.githubusercontent.com/aster-king/Vast-AI-Comfy/refs/heads/main/vast.sh"
+    "https://raw.githubusercontent.com/aster-king/Vast-AI-Comfy/refs/heads/main/talk.sh"
 )
 
 ### DO NOT EDIT BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING ###
@@ -108,7 +97,7 @@ function provisioning_start() {
     touch "${WORKSPACE}/step1_download_tools_installed"
     printf "--- ✅ STEP 1 COMPLETE ---\n"
     
-    # STEP 2: Download start.sh & vast.sh (files serve as their own markers)
+    # STEP 2: Download start.sh & talk.sh (files serve as their own markers)
     printf "--- 📜 STEP 2: DOWNLOADING WORKSPACE SCRIPTS ---\n"
     provisioning_download_workspace_scripts
     printf "--- ✅ STEP 2 COMPLETE ---\n"
@@ -172,8 +161,8 @@ function provisioning_download_workspace_scripts() {
     done
     # Make downloaded scripts executable
     chmod +x "${WORKSPACE}/start.sh"
-    chmod +x "${WORKSPACE}/vast.sh"
-    printf "Scripts made executable: start.sh, vast.sh\n"
+    chmod +x "${WORKSPACE}/talk.sh"
+    printf "Scripts made executable: start.sh, talk.sh\n"
 }
 
 # STEP 3: Clone nodes if new, or pull updates if they exist
@@ -214,51 +203,50 @@ function provisioning_install_node_requirements() {
 # STEP 4B: Download all model files
 function provisioning_get_all_files() {
     printf "--- 🚀 STARTING MODEL DOWNLOADS ---\n"
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/checkpoints" \
-        "${CHECKPOINT_MODELS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/unet" \
-        "${UNET_MODELS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/loras" \
-        "${LORA_MODELS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/controlnet" \
-        "${CONTROLNET_MODELS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/vae" \
-        "${VAE_MODELS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/esrgan" \
-        "${ESRGAN_MODELS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/wav2vec2" \
-        "${WAV2VEC2_MODELS[@]}" &
+    
+    # Chinese wav2vec2 transformers
     provisioning_get_files \
         "${COMFYUI_DIR}/models/transformers/TencentGameMate/chinese-wav2vec2-base" \
         "${TRANSFORMERS_CHINESE_WAV2VEC2[@]}" &
+    
+    # wav2vec2 models
     provisioning_get_files \
-        "${COMFYUI_DIR}/models/unet" \
-        "${LTX_DIFFUSION_GGUF[@]}" &
+        "${COMFYUI_DIR}/models/wav2vec2" \
+        "${WAV2VEC2_MODELS[@]}" &
+    
+    # Diffusion models (parent folder, no infinite_talk subfolder)
     provisioning_get_files \
         "${COMFYUI_DIR}/models/diffusion_models" \
-        "${LTX_DIFFUSION[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/diffusion_models" \
-        "${MISC_DIFFUSION[@]}" &
+        "${DIFFUSION_MODELS[@]}" &
+    
+    # Text encoders
     provisioning_get_files \
         "${COMFYUI_DIR}/models/text_encoders" \
-        "${LTX_TEXT_ENCODERS[@]}" &
+        "${TEXT_ENCODERS[@]}" &
+    
+    # LoRAs (parent folder, no infinite_talk subfolder)
     provisioning_get_files \
-        "${COMFYUI_DIR}/models/latent_upscale_models" \
-        "${LTX_UPSCALER[@]}" &
+        "${COMFYUI_DIR}/models/loras" \
+        "${LORA_MODELS[@]}" &
+    
+    # Clip Vision
+    provisioning_get_files \
+        "${COMFYUI_DIR}/models/clip_vision" \
+        "${CLIP_VISION_MODELS[@]}" &
+    
+    # VAE
+    provisioning_get_files \
+        "${COMFYUI_DIR}/models/vae" \
+        "${VAE_MODELS[@]}" &
+    
+    # Workflow files
     provisioning_get_files \
         "${COMFYUI_DIR}/user/default/workflows" \
         "${WORKFLOW_FILES[@]}" &
     
     wait
     printf "--- ✅ DOWNLOADS COMPLETE ---\n"
+    echo "InfiniteTalk install complete."
 }
 
 function provisioning_get_pip_packages() {
