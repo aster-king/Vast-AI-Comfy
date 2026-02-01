@@ -69,6 +69,11 @@ ONNX_MODELS=(
     "https://huggingface.co/JunkyByte/easy_ViTPose/resolve/main/onnx/wholebody/vitpose-l-wholebody.onnx"
 )
 
+# ControlNet models
+CONTROLNET_MODELS=(
+    "https://huggingface.co/Duplicate-repo/WanVideo_comfy/resolve/main/Wan21_Uni3C_controlnet_fp16.safetensors"
+)
+
 # Workflow files
 WORKFLOW_FILES=(
     "https://raw.githubusercontent.com/aster-king/Vast-AI-Comfy/main/scail.json"
@@ -227,6 +232,11 @@ function provisioning_get_all_files() {
     provisioning_get_files \
         "${COMFYUI_DIR}/models/detection" \
         "${ONNX_MODELS[@]}" &
+    
+    # ControlNet models
+    provisioning_get_files \
+        "${COMFYUI_DIR}/models/controlnet" \
+        "${CONTROLNET_MODELS[@]}" &
     
     # Workflow files
     provisioning_get_files \
