@@ -65,33 +65,42 @@ function provisioning_start() {
     provisioning_print_header
     
     # STEP 1: Install download tools (aria2 + hf_transfer)
-    printf "--- 📦 STEP 1: INSTALLING DOWNLOAD TOOLS ---\n"
+    printf "%s
+" "--- 📦 STEP 1: INSTALLING DOWNLOAD TOOLS ---"
     provisioning_install_download_tools
     touch "${WORKSPACE}/step1_download_tools_installed"
-    printf "--- ✅ STEP 1 COMPLETE ---\n"
+    printf "%s
+" "--- ✅ STEP 1 COMPLETE ---"
     
     # STEP 2: Download start.sh & ltx2.3.sh (files serve as their own markers)
-    printf "--- 📜 STEP 2: DOWNLOADING WORKSPACE SCRIPTS ---\n"
+    printf "%s
+" "--- 📜 STEP 2: DOWNLOADING WORKSPACE SCRIPTS ---"
     provisioning_download_workspace_scripts
-    printf "--- ✅ STEP 2 COMPLETE ---\n"
+    printf "%s
+" "--- ✅ STEP 2 COMPLETE ---"
     
     # STEP 3: Clone/Update custom nodes
-    printf "--- 🔧 STEP 3: CLONING/UPDATING CUSTOM NODES ---\n"
+    printf "%s
+" "--- 🔧 STEP 3: CLONING/UPDATING CUSTOM NODES ---"
     provisioning_clone_nodes
     touch "${WORKSPACE}/step3_repo_downloaded"
-    printf "--- ✅ STEP 3 COMPLETE ---\n"
+    printf "%s
+" "--- ✅ STEP 3 COMPLETE ---"
     
     # STEP 4: Run model downloads + pip installs in parallel
-    printf "--- 🚀 STEP 4: STARTING PARALLEL DOWNLOADS & PIP INSTALLS ---\n"
+    printf "%s
+" "--- 🚀 STEP 4: STARTING PARALLEL DOWNLOADS & PIP INSTALLS ---"
     
     # 4A: Pip installs (background, then launch ComfyUI when done)
     (
         provisioning_install_node_requirements
         touch "${WORKSPACE}/step4a1_requirements_installed"
-        printf "--- ✅ STEP 4A1 COMPLETE (Requirements installed) ---\n"
+        printf "%s
+" "--- ✅ STEP 4A1 COMPLETE (Requirements installed) ---"
         
         # STEP 4A2: Launch ComfyUI as soon as pip is done (don't wait for downloads)
-        printf "--- 🚀 STEP 4A2: LAUNCHING COMFYUI ---\n"
+        printf "%s
+" "--- 🚀 STEP 4A2: LAUNCHING COMFYUI ---"
         touch "${WORKSPACE}/step4a2_comfyui_launching"
         bash "${WORKSPACE}/start.sh"
     ) &
@@ -104,7 +113,8 @@ function provisioning_start() {
     # Wait for downloads to complete (pip/launch runs independently)
     wait $DOWNLOAD_PID
     touch "${WORKSPACE}/step4b_models_downloaded"
-    printf "--- ✅ STEP 4B COMPLETE (Models downloaded) ---\n"
+    printf "%s
+" "--- ✅ STEP 4B COMPLETE (Models downloaded) ---"
     
     # Wait for pip install and ComfyUI launch (this will hang because server runs)
     wait $PIP_AND_LAUNCH_PID
@@ -152,7 +162,8 @@ function provisioning_clone_nodes() {
 }
 
 function provisioning_install_node_requirements() {
-    printf "--- 📥 INSTALLING NODE REQUIREMENTS & PIP PACKAGES ---\n"
+    printf "%s
+" "--- 📥 INSTALLING NODE REQUIREMENTS & PIP PACKAGES ---"
     
     for repo in "${NODES[@]}"; do
         dir=$(basename "${repo}" .git)
@@ -164,11 +175,13 @@ function provisioning_install_node_requirements() {
         fi
     done
     provisioning_get_pip_packages
-    printf "--- ✅ PIP INSTALLATIONS COMPLETE ---\n"
+    printf "%s
+" "--- ✅ PIP INSTALLATIONS COMPLETE ---"
 }
 
 function provisioning_get_all_files() {
-    printf "--- 🚀 STARTING MODEL DOWNLOADS ---\n"
+    printf "%s
+" "--- 🚀 STARTING MODEL DOWNLOADS ---"
     provisioning_get_files "${COMFYUI_DIR}/models/vae" "${VAE[@]}" &
     provisioning_get_files "${COMFYUI_DIR}/models/diffusion_models" "${DIFFUSION_MODELS[@]}" &
     provisioning_get_files "${COMFYUI_DIR}/models/text_encoders" "${TEXT_ENCODERS[@]}" &
@@ -176,7 +189,8 @@ function provisioning_get_all_files() {
     provisioning_get_files "${COMFYUI_DIR}/user/default/workflows" "${WORKFLOW_FILES[@]}" &
     
     wait
-    printf "--- ✅ DOWNLOADS COMPLETE ---\n"
+    printf "%s
+" "--- ✅ DOWNLOADS COMPLETE ---"
 }
 
 function provisioning_get_pip_packages() {
