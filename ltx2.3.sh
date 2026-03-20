@@ -30,7 +30,6 @@ NODES=(
     "https://github.com/Jasonzzt/ComfyUI-CacheDiT"
     "https://github.com/kijai/ComfyUI-KJNodes"
 )
-)
 
 DIFFUSION_MODELS=(
     "https://huggingface.co/Kijai/LTX2.3_comfy/resolve/main/diffusion_models/ltx-2.3-22b-distilled_transformer_only_fp8_input_scaled_v3.safetensors"
@@ -111,8 +110,6 @@ function provisioning_start() {
     wait $PIP_AND_LAUNCH_PID
 }
 
-
-
 # STEP 1: Install aria2 and hf_transfer
 function provisioning_install_download_tools() {
     printf "Installing aria2...\n"
@@ -133,7 +130,6 @@ function provisioning_download_workspace_scripts() {
         printf "Downloading script: %s\n" "${url}"
         provisioning_download "${url}" "${WORKSPACE}"
     done
-    # Make downloaded scripts executable
     chmod +x "${WORKSPACE}/start.sh"
     chmod +x "${WORKSPACE}/ltx2.3.sh"
     printf "Scripts made executable: start.sh, ltx2.3.sh\n"
@@ -145,19 +141,16 @@ function provisioning_clone_nodes() {
         dir=$(basename "${repo}" .git)
         path="${COMFYUI_DIR}/custom_nodes/${dir}"
         if [[ -d $path ]]; then
-            # Folder exists - check for updates via git pull
             printf "Checking for updates: %s...\n" "${dir}"
             ( cd "$path" && git fetch origin && git pull --ff-only ) || \
                 printf "Warning: Could not update %s, skipping...\n" "${dir}"
         else
-            # Folder doesn't exist - clone it
             printf "Cloning node: %s...\n" "${repo}"
             git clone "${repo}" "${path}" --recursive
         fi
     done
 }
 
-# STEP 4A1: Install requirements for all nodes
 function provisioning_install_node_requirements() {
     printf "--- 📥 INSTALLING NODE REQUIREMENTS & PIP PACKAGES ---\n"
     
@@ -174,24 +167,13 @@ function provisioning_install_node_requirements() {
     printf "--- ✅ PIP INSTALLATIONS COMPLETE ---\n"
 }
 
-# STEP 4B: Download all model files
 function provisioning_get_all_files() {
     printf "--- 🚀 STARTING MODEL DOWNLOADS ---\n"
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/vae" \
-        "${VAE[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/diffusion_models" \
-        "${DIFFUSION_MODELS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/text_encoders" \
-        "${TEXT_ENCODERS[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/models/latent_upscale_models" \
-        "${LTX_UPSCALER[@]}" &
-    provisioning_get_files \
-        "${COMFYUI_DIR}/user/default/workflows" \
-        "${WORKFLOW_FILES[@]}" &
+    provisioning_get_files "${COMFYUI_DIR}/models/vae" "${VAE[@]}" &
+    provisioning_get_files "${COMFYUI_DIR}/models/diffusion_models" "${DIFFUSION_MODELS[@]}" &
+    provisioning_get_files "${COMFYUI_DIR}/models/text_encoders" "${TEXT_ENCODERS[@]}" &
+    provisioning_get_files "${COMFYUI_DIR}/models/latent_upscale_models" "${LTX_UPSCALER[@]}" &
+    provisioning_get_files "${COMFYUI_DIR}/user/default/workflows" "${WORKFLOW_FILES[@]}" &
     
     wait
     printf "--- ✅ DOWNLOADS COMPLETE ---\n"
@@ -199,7 +181,7 @@ function provisioning_get_all_files() {
 
 function provisioning_get_pip_packages() {
     if [[ -n $PIP_PACKAGES ]]; then
-            pip install --no-cache-dir ${PIP_PACKAGES[@]}
+        pip install --no-cache-dir ${PIP_PACKAGES[@]}
     fi
 }
 
@@ -222,38 +204,25 @@ function provisioning_print_header() {
     printf "\n##############################################\n#                                            #\n#          Provisioning container            #\n#                                            #\n#         This will take some time           #\n#                                            #\n# Your container will be ready on completion #\n#                                            #\n##############################################\n\n"
 }
 
-
-
-# Smart download function with fallback
-# Priority: hf_transfer (for HF URLs) → aria2c (fallback or for non-HF URLs)
-# Also skips files that already exist
 function provisioning_download() {
     local url="$1"
     local dir="$2"
     local filename=$(basename "$url")
     local filepath="${dir}/${filename}"
     
-    # Skip if file already exists (for non-HF downloads)
-    # HF CLI handles its own caching/skipping
     if [[ "$url" != *"huggingface.co"* ]] && [[ -f "$filepath" ]]; then
         printf "⏭️  SKIPPED (already exists): %s\n" "$filename"
         return 0
     fi
     
     if [[ "$url" == *"huggingface.co"* ]]; then
-        # Extract repo_id and filename from HuggingFace URL
-        # URL format: https://huggingface.co/REPO/resolve/BRANCH/PATH/FILE
         local repo_id=$(echo "$url" | sed -E 's|https://huggingface.co/([^/]+/[^/]+)/resolve/.*|\1|')
         local file_path=$(echo "$url" | sed -E 's|https://huggingface.co/[^/]+/[^/]+/resolve/[^/]+/(.*)|\1|')
         
         printf "🚀 Trying hf_transfer for: %s (repo: %s)\n" "$filename" "$repo_id"
         
-        # Try hf_transfer first, fallback to aria2c if it fails
-        # Download to temp location then move to avoid nested folders from file_path
         if huggingface-cli download "$repo_id" "$file_path" --local-dir "${dir}/.hf_temp" --local-dir-use-symlinks False 2>/dev/null; then
-            # Move the file from the nested structure to the target directory
             find "${dir}/.hf_temp" -type f -name "$filename" -exec mv {} "${dir}/" \;
-            # Clean up temp directory
             rm -rf "${dir}/.hf_temp"
             printf "✅ Downloaded via hf_transfer: %s\n" "$filename"
         else
@@ -264,17 +233,11 @@ function provisioning_download() {
                 printf "✅ Downloaded via aria2c (fallback): %s\n" "$filename"
         fi
     else
-        # Use aria2c for non-HuggingFace URLs (GitHub, etc.)
-        # -x 16: Use 16 connections per server
-        # -s 16: Use 16 threads
-        # -k 1M: 1MB block size
-        # -c: Continue/resume downloads
         aria2c -x 16 -s 16 -k 1M -c --console-log-level=error --summary-interval=5 -d "$dir" "$url" && \
             printf "✅ Downloaded via aria2c: %s\n" "$filename"
     fi
 }
 
-# Allow user to disable provisioning if they started with a script they didn't want
 if [[ ! -f /.noprovisioning ]]; then
     provisioning_start
 fi
