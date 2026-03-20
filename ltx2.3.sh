@@ -71,7 +71,7 @@ function provisioning_start() {
     touch "${WORKSPACE}/step1_download_tools_installed"
     printf "--- ✅ STEP 1 COMPLETE ---\n"
     
-    # STEP 2: Download start.sh & ltx2.sh (files serve as their own markers)
+    # STEP 2: Download start.sh & ltx2.3.sh (files serve as their own markers)
     printf "--- 📜 STEP 2: DOWNLOADING WORKSPACE SCRIPTS ---\n"
     provisioning_download_workspace_scripts
     printf "--- ✅ STEP 2 COMPLETE ---\n"
@@ -135,8 +135,8 @@ function provisioning_download_workspace_scripts() {
     done
     # Make downloaded scripts executable
     chmod +x "${WORKSPACE}/start.sh"
-    chmod +x "${WORKSPACE}/ltx2.sh"
-    printf "Scripts made executable: start.sh, ltx2.sh\n"
+    chmod +x "${WORKSPACE}/ltx2.3.sh"
+    printf "Scripts made executable: start.sh, ltx2.3.sh\n"
 }
 
 # STEP 3: Clone nodes if new, or pull updates if they exist
