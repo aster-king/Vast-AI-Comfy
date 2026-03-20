@@ -28,6 +28,7 @@ PIP_PACKAGES=(
 NODES=(
     "https://github.com/Comfy-Org/ComfyUI-Manager"
     "https://github.com/Jasonzzt/ComfyUI-CacheDiT"
+    "https://github.com/evanspearman/ComfyMath"
     "https://github.com/kijai/ComfyUI-KJNodes"
 )
 
