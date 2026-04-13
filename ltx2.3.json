@@ -2328,7 +2328,7 @@
         "widget_ue_connectable": {}
       },
       "widgets_values": [
-        "ltx-2.3-22b-distilled_transformer_only_fp8_input_scaled_v3.safetensors",
+        "ltx-2.3-22b-distilled-1.1_transformer_only_fp8_scaled.safetensors",
         "default"
       ]
     },
